@@ -61,13 +61,12 @@ if __name__ == '__main__':
     Fake = 'Fake'
     Privacy = 'Privacy'
     COURSE = Privacy
-    PROCESSED_DIR = "processed data"
-    MEMBERSHIP = "course_memberships.csv"
-    TARGET_FILE = "discussion_questions.csv"
     CUR_DIR = os.path.split(os.path.realpath(__file__))[0]
+    PROCESSED_DIR = CUR_DIR + "/" + "processed data"
+    TARGET_FILE = "discussion_questions.csv"
     # import data
     questions = pd.read_csv(CUR_DIR + "/" + COURSE + "/" + TARGET_FILE, encoding="ISO-8859-1")
     # clean it
     questions = clean_questions(questions)
     # output the cleaned data
-    questions.to_csv(CUR_DIR + "/" + PROCESSED_DIR + "/" + COURSE + "/processed_" + TARGET_FILE, index = False, encoding ="ISO-8859-1")
+    questions.to_csv(PROCESSED_DIR + "/" + COURSE + "/processed_" + TARGET_FILE, index = False, encoding ="ISO-8859-1")

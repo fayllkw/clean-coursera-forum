@@ -1,7 +1,8 @@
 """
 merging.py:
-get rid of unnecessary columns; merge answers and questions;
+get rid of unnecessary columns; merge answers and questions; output merged dataframe.
 also get a version of merged dataframe without instructor posts.
+Show # of total learners and # of posts by learners.
 Here's also a function could be used to remove unwanted sessions.
 """
 
@@ -78,32 +79,30 @@ if __name__ == '__main__':
     Fake = 'Fake'
     Privacy = 'Privacy'
     COURSE = Privacy
-    DATA_DIR = "processed data/" + COURSE
-    ANSWER = "processed_discussion_answers.csv"
-    QUESTION = "processed_discussion_questions.csv"
-    MEMBERSHIP = COURSE + "/course_memberships.csv"
     CUR_DIR = os.path.split(os.path.realpath(__file__))[0]
+    RESULT_DIR = CUR_DIR + "/processed data/" + COURSE
+    ANSWER_PATH = CUR_DIR + "/processed data/" + COURSE + "/processed_discussion_answers.csv"
+    QUESTION_PATH = CUR_DIR + "/processed data/" + COURSE + "/processed_discussion_questions.csv"
+    MEMBERSHIP_PATH = CUR_DIR + "/" + COURSE + "/course_memberships.csv"
 
-    # read in questions
-    questions = pd.read_csv(CUR_DIR + "/" + DATA_DIR + "/" + QUESTION, encoding="ISO-8859-1")
-    # read in answers
-    answers = pd.read_csv(CUR_DIR + "/" + DATA_DIR + "/" + ANSWER, encoding="ISO-8859-1")
+    # read in questions and answers
+    questions = pd.read_csv(QUESTION_PATH, encoding="ISO-8859-1")
+    answers = pd.read_csv(ANSWER_PATH, encoding="ISO-8859-1")
     # merge them
     merged = merge_questions_and_answers(questions, answers)
     # output
-    merged.to_csv(CUR_DIR + "/" + DATA_DIR + "/merged_question_and_answer.csv", index=False, encoding = "ISO-8859-1")
+    merged.to_csv(RESULT_DIR + "/merged_question_and_answer.csv", index=False, encoding ="ISO-8859-1")
 
     # read in memberships
-    membership = pd.read_csv(CUR_DIR + "/" + MEMBERSHIP, encoding = "ISO-8859-1")
-    # count number of learners
+    membership = pd.read_csv(MEMBERSHIP_PATH, encoding = "ISO-8859-1")
     print("# of total learners in {}: {}".
           format(COURSE, sum(membership["course_membership_role"].isin([ "PRE_ENROLLED_LEARNER",  "LEARNER"]))))
     # remove instructor posts
     merged_no_instructor = remove_instructors(membership, merged)
     print('# of posts by learner: ', len(merged_no_instructor))
     # output without instructor
-    merged_no_instructor.to_csv(CUR_DIR + "/" + DATA_DIR + "/merged_question_and_answer_without_instructor.csv", index=False,
-                  encoding="ISO-8859-1")
+    merged_no_instructor.to_csv(RESULT_DIR + "/merged_question_and_answer_without_instructor.csv", index=False,
+                                encoding="ISO-8859-1")
 
     # # remove learners in certain time period
     # membership['course_membership_ts'] = membership['course_membership_ts'].apply(parse)

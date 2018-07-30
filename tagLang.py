@@ -2,6 +2,10 @@
 removing non-en.py:
 Use langid to add language information for each post; remove empty and non-en posts.
 (not absolutely accurate, especially for short or mixed posts)
+Show posts count information.
+Output three csv files:
+all posts with language label; posts without instructors with language label;
+english and non-empty posts without instructors.
 """
 
 import pandas as pd
@@ -38,9 +42,8 @@ if __name__ == '__main__':
 
     # read in the merged file
     merged = pd.read_csv(CUR_DIR + "/" + DATA_DIR + "/" + FILE, encoding ="ISO-8859-1")
-    dat_wo_instructor = pd.read_csv(CUR_DIR + "/" + DATA_DIR + "/" + FILE_WO_INSTRUCTOR, encoding = "ISO-8859-1")
-    dat_wo_instructor = dat_wo_instructor[["discussion_answer_id", "discussion_question_id"]]
-    origin_dat = merged.copy()
+    merged_wo_instructor = pd.read_csv(CUR_DIR + "/" + DATA_DIR + "/" + FILE_WO_INSTRUCTOR, encoding ="ISO-8859-1")
+    merged_wo_instructor = merged_wo_instructor[["discussion_answer_id", "discussion_question_id"]]
 
     # add language column
     merged['language'] = get_language_label(merged)
@@ -49,7 +52,7 @@ if __name__ == '__main__':
     merged.to_csv(CUR_DIR + "/" + DATA_DIR + "/" + "merged_question_and_answer_with_language.csv", index = False, encoding = "ISO-8859-1")
 
     # output the previous dataframe except for instructor posts
-    labeled_no_instructor = merged.merge(dat_wo_instructor, how='right')
+    labeled_no_instructor = merged.merge(merged_wo_instructor, how='right')
     print('# of total posts by learners: ', len(labeled_no_instructor))
     labeled_no_instructor.to_csv(CUR_DIR + "/" + DATA_DIR + "/" + "merged_question_and_answer_with_language_without_instructor.csv",
                    index = False, encoding = "ISO-8859-1")
@@ -58,7 +61,7 @@ if __name__ == '__main__':
     merged = merged[merged["post_content_length"] != 0]
     # get all the posts (no instructor) in english and output
     english_only = merged[merged['language'] == 'en']
-    english_only_wo_instructor = english_only.merge(dat_wo_instructor, on=["discussion_answer_id","discussion_question_id"])
+    english_only_wo_instructor = english_only.merge(merged_wo_instructor, on=["discussion_answer_id", "discussion_question_id"])
     print('# of english posts: ', len(english_only))
     print('# of english posts by learners: ', len(english_only_wo_instructor))
     english_only_wo_instructor.to_csv(CUR_DIR + "/" + DATA_DIR + "/" + "english_only_question_and_answer_without_instructor.csv",
