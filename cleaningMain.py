@@ -11,10 +11,12 @@ if __name__ == '__main__':
     PARENT_DIR = os.path.dirname(CUR_DIR)
     DATA_DIR = PARENT_DIR + '/data'
     RESULT_DIR = PARENT_DIR + '/processed data'
+
     # get course directory names
     courses = [f for f in os.listdir(DATA_DIR) if not f.startswith('.')]
     print(courses)
     learner_count = {}
+
     # clean course by course
     for course in courses:
         print(course)
