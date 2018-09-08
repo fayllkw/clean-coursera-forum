@@ -24,20 +24,20 @@ def merge_questions_and_answers(questions, answers):
                    axis=1, inplace=True)
     # add a column, reorder and rename the columns in questions
     questions = questions.reindex(columns=["discussion_answer_id", "discussion_question_id",
-                                           "discussion_answer_parent_discussion_answer_id", "umich_user_id",
+                                           "discussion_answer_parent_discussion_answer_id", "user_id",
                                            "discussion_question_title", "discussion_question_details",
                                            "discussion_question_created_ts", "question_details_length"])
     questions.columns = ["discussion_answer_id", "discussion_question_id", "discussion_answer_parent_discussion_answer_id",
-                         "umich_user_id", "discussion_question_title", "post_content", "post_created_ts",
+                         "user_id", "discussion_question_title", "post_content", "post_created_ts",
                          "post_content_length"]
     # repeat the similar steps for answers
     answers.drop(["course_id", "discussion_answer_updated_ts"], axis=1, inplace=True)
     answers = answers.reindex(columns=["discussion_answer_id", "discussion_question_id",
-                                       "discussion_answer_parent_discussion_answer_id", "umich_user_id",
+                                       "discussion_answer_parent_discussion_answer_id", "user_id",
                                        "discussion_question_title", "discussion_answer_content",
                                        "discussion_answer_created_ts", "answer_content_length"])
     answers.columns = ["discussion_answer_id", "discussion_question_id", "discussion_answer_parent_discussion_answer_id",
-                       "umich_user_id", "discussion_question_title", "post_content", "post_created_ts",
+                       "user_id", "discussion_question_title", "post_content", "post_created_ts",
                        "post_content_length"]
     # add these two dataframes together
     frames = [questions, answers]
@@ -53,7 +53,7 @@ def remove_instructors(membership, merged):
     """
     LEARNERS = ["NOT_ENROLLED", "PRE_ENROLLED_LEARNER", "BROWSER", "LEARNER"]
     learners = membership[membership["course_membership_role"].isin(LEARNERS)]
-    merged_no_instructor = merged[merged["umich_user_id"].isin(learners["umich_user_id"])]
+    merged_no_instructor = merged[merged["user_id"].isin(learners["user_id"])]
     return merged_no_instructor
 
 def remove_other_senssion_learners(membership, begin, end):

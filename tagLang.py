@@ -18,11 +18,11 @@ def detect_language(string, word_count):
     langid got difficulty in classifying short posts,
     such as "Hi Laurensia. Welcome!", "Hello guys", “no questions”.
     Since the linguistic context of the forum is generally English,
-    I just classify all posts shorter than 7 words as English.
+    I just classify all posts shorter than 5 words as English.
     The number 7 is decided by observation, which should be decided
     more scientifically if generalization is needed.
     """
-    if word_count < 7: return 'en'
+    if word_count < 5: return 'en'
     else: return langid.classify(string)[0]
 
 def get_language_label(merged):
