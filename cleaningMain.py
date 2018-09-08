@@ -23,7 +23,7 @@ if __name__ == '__main__':
     PARENT_DIR = os.path.dirname(CUR_DIR)
     DATA_DIR = PARENT_DIR + '/data'
     RESULT_DIR = PARENT_DIR + '/processed data'
-    SUMMARY_DIR = PARENT_DIR + '/summary'
+    SUMMARY_DIR = PARENT_DIR + '/summary/stats'
 
     # get course directory names
     courses = [f for f in os.listdir(DATA_DIR) if not f.startswith('.')
