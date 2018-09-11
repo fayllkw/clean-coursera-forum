@@ -1,7 +1,7 @@
 ## cleanTeachOuts
 A mini project for cleaning the Coursera discussion forums data. It mainly:
 
-* restores the broken csv format
+* restores the broken csv format caused by commas in the texts
 * removes HTML tags
 * adds post length information
 * merges questions and answers
