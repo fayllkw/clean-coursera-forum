@@ -51,7 +51,8 @@ if __name__ == '__main__':
 
         # count the number of learners
         membership = pd.read_csv(DATA_DIR + '/' + course + '/course_memberships.csv', encoding='ISO-8859-1')
-        temp_learner_count = sum(membership["course_membership_role"].isin(["PRE_ENROLLED_LEARNER", "LEARNER"]))
+        learner_membership = membership[membership["course_membership_role"].isin(["PRE_ENROLLED_LEARNER", "LEARNER"])]
+        temp_learner_count = len(set(learner_membership["umich_user_id"]))
         print("# of total learners in {}: {}".format(course, temp_learner_count))
         learner_count[course] = temp_learner_count
 
